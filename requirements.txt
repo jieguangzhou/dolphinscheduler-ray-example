@@ -1,0 +1,5 @@
+tensorflow>=2.8.0
+ray[tune, data, serve]>=1.12.1
+sklearn
+fastapi
+scikit-learn==1.0.2
