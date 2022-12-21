@@ -43,7 +43,7 @@ def load_resource(file_name):
 resource_helper = load_resource("helper.py")
 
 with Workflow(
-    name="training",
+    name="pipeline",
     resource_list=[
         resource_helper
     ],
@@ -63,7 +63,7 @@ with Workflow(
     )
 
     task_train_model = Python(
-        name="train_model.py",
+        name="train_model",
         definition=load_script("train_model.py"),
         resource_list=['helper.py'],
         local_params=[
