@@ -1,6 +1,11 @@
 # dolphinscheduler-ray-example
 
 
+
+Demo from [Tabular data training and serving with Keras and Ray AIR](https://docs.ray.io/en/latest/ray-air/examples/tfx_tabular_train_to_serve.html)
+
+
+
 ## Start DolphinScheduler
 
 We start the Dolphinscheduler with the following command.
@@ -36,19 +41,19 @@ After we log in to the DolphinScheduler, we can see a project
 
 
 
-Then, we can see 4 workflow in the project
+Then, we can see 3 workflow in the project
 
 - start-ray: start a ray cluster in the docker
 - stop-ray: stop the ray cluster
 - pipeline: train the model in the local ray cluster and deploy the model
 
-![image-20221221232334612](images/image-20221221232334612.png)
+![image-20221222004719448](images/image-20221222004719448.png)
 
 
 
 ### start ray
 
-![image-20221221232532621](images/image-20221221232532621.png)
+![image-20221222004754684](images/image-20221222004754684.png)
 
 Then, we can log in to the ray (for model training) dashboard` <ip>:8265`
 
@@ -58,14 +63,14 @@ Then, we can log in to the ray (for model training) dashboard` <ip>:8265`
 
 
 
-![image-20221221232738700](images/image-20221221232738700.png)
+![image-20221222004825367](images/image-20221222004825367.png)
 
 
 
 **Startup Parameter:**
 
 - train_ray_address: ray cluster address of the training model
-- deploy_ray_address: `ray://<ip>:10001`, The address of the ray cluster where the model is deployed
+- deploy_ray_address: ray cluster address of the deploy model
 
 
 
@@ -80,6 +85,6 @@ Then we can seed the workflow instance of `pipeline`, there are for tasks:
 
 
 
-we can double click the test_serving task and click the view log to view the task log. Log as follows.
+We can double click the test_serving task and click the view log to view the task log. Log as follows.
 
 ![image-20221221233636615](images/image-20221221233636615.png)
