@@ -59,7 +59,7 @@ Then, we can see 4 workflow in the project
 - deploy-remote: deploy the model to the remote ray cluster
 - pipeline: train the model in the local ray cluster and deploy the model to the remote ray cluster
 
-![image-20221221232334612](image-20221221232334612.png)
+![image-20221221232334612](images/image-20221221232334612.png)
 
 
 
