@@ -49,7 +49,7 @@ with Workflow(
     ],
     param={
         "train_ray_address": "auto",
-        "deploy_ray_address": "ray://172.17.0.3:10001",
+        "deploy_ray_address": "auto",
     }
 ) as pd:
 
@@ -91,35 +91,6 @@ with Workflow(
 
     pd.submit()
 
-
-with Workflow(
-    name="deploy-remote",
-    resource_list=[
-        resource_helper
-    ],
-    param={
-        "deploy_ray_address": "ray://172.17.0.3:10001",
-        "dataset_path": "/tmp/ray-example/data/dataset.pkl",
-        'checkpoint_path': "/tmp/ray-example/checkpoint.bin"
-    }
-) as pd:
-
-    task_serving = Python(
-        name="serving",
-        definition=load_script("serving.py"),
-        resource_list=['helper.py'],
-        local_params=[
-            {"prop": "endpoint_uri", "direct": "OUT", "type": "VARCHAR", "value": ""}]
-    )
-
-    task_test_serving = Python(
-        name="test_serving",
-        definition=load_script("test_serving.py"),
-    )
-
-    task_serving >> task_test_serving
-
-    pd.submit()
 
 with Workflow(
     name="start-ray",

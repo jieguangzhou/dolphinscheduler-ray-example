@@ -22,28 +22,12 @@ And then, we can log in to the DolphinScheduler at `http://<ip>:12345/dolphinsch
 - password: `dolphinscheduler123`
 
 
-
-## Start ray cluster to deploy the model
-
-For convenience, I reuse the ds image, but only to start the ray service.
-
-```shell
-docker run --name ray -p 8266:8265 -p 10001:10001 -d jalonzjg/dolphinscheduler-standalone-server:3.1.2-ray ray start --num-cpus=8 --object-store-memory=7000000000 --head --block --dashboard-host=0.0.0.0
-```
-
-Then, we can login to the ray (for model deployment) dashboard` <ip>:8266`
-
-we can use command `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ray` to get the ip
-
-![image-20221221231050410](images/image-20221221231050410.png)
-
-
-
 ## Create workflow
 
 ```shell
+python3 -m pip install apache-dolphinscheduler==4.0.0
 export PYDS_HOME=./
-python pyds-workflow.py
+python3 pyds-workflow.py
 ```
 
 After we log in to the DolphinScheduler, we can see a project
@@ -56,8 +40,7 @@ Then, we can see 4 workflow in the project
 
 - start-ray: start a ray cluster in the docker
 - stop-ray: stop the ray cluster
-- deploy-remote: deploy the model to the remote ray cluster
-- pipeline: train the model in the local ray cluster and deploy the model to the remote ray cluster
+- pipeline: train the model in the local ray cluster and deploy the model
 
 ![image-20221221232334612](images/image-20221221232334612.png)
 
