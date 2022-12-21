@@ -5,7 +5,8 @@ from helper import LABEL
 
 def get_data() -> pd.DataFrame:
     """Fetch the taxi fare data to work on."""
-    _data = pd.read_csv('data.csv', index_col=0)
+    _data = pd.read_csv("https://raw.githubusercontent.com/tensorflow/tfx/master/"
+                        "tfx/examples/chicago_taxi_pipeline/data/simple/data.csv")
     _data[LABEL] = _data["tips"] / _data["fare"] > 0.2
     # We drop some columns here for the sake of simplicity.
     return _data.drop(
@@ -32,4 +33,4 @@ os.makedirs(tmp_dir, exist_ok=True)
 data_path = os.path.join(tmp_dir, "data.csv")
 
 data.to_csv(data_path, index=False)
-print('${setValue(source_data_path=%s)}' % data_path)
+print('${setValue(data_path=%s)}' % data_path)

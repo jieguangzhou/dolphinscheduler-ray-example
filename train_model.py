@@ -13,9 +13,10 @@ from ray.air import session
 import tensorflow as tf
 from helper import build_model, get_preprocessor, NUM_WORKERS, EPOCH, INPUT, LABEL, BATCH_SIZE
 
-ray.init(address='auto')
+data_path = "/tmp/ray-example/data/data.csv"  # $PARAM:
+ray_address = "local"  # $PARAM: train_ray_address
 
-data_path = '/tmp/ray-example/data/data.csv'
+ray.init(address=ray_address)
 
 
 def split_data(data: pd.DataFrame) -> Tuple[ray.data.Dataset, pd.DataFrame, np.array]:

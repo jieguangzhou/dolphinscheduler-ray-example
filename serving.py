@@ -7,6 +7,11 @@ from fastapi import Request
 from helper import build_model
 import pandas as pd
 
+ray_address = "local"  # $PARAM: deploy_ray_address
+checkpoint_path = "/tmp/ray-example/checkpoint.bin"  # $PARAM:
+
+# ray.init(address=ray_address)
+
 
 async def dataframe_adapter(request: Request):
     """Serve HTTP Adapter that reads JSON and converts to pandas DataFrame."""
@@ -29,15 +34,14 @@ def serve_model(checkpoint: Checkpoint, model_definition, adapter, name="Model")
             http_adapter=adapter,
         )
     )
-    return f"http://localhost:8000/"
+    return "http://localhost:8000/"
 
 
 # Generally speaking, training and serving are done in totally different ray clusters.
 # To simulate that, let's shutdown the old ray cluster in preparation for serving.
 
-checkpoint_path = "/tmp/ray-example/checkpoint.bin"
 
 with open(checkpoint_path, "rb") as r_f:
     checkpoint = Checkpoint.from_bytes(r_f.read())
 endpoint_uri = serve_model(checkpoint, build_model, dataframe_adapter)
-print(endpoint_uri)
+print('${setValue(endpoint_uri=%s)}' % endpoint_uri)

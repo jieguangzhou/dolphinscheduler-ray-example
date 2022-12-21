@@ -6,8 +6,8 @@ import pickle
 
 NUM_SERVE_REQUESTS = 10
 
-dataset_path = '/tmp/ray-example/data/dataset.pkl'
-endpoint_uri = "http://localhost:8000"
+dataset_path = "/tmp/ray-example/data/dataset.pkl"  # $PARAM:
+endpoint_uri = "https://localhost:8000"  # $PARAM:
 
 dataset = pickle.load(open(dataset_path, 'rb'))
 
