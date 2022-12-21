@@ -54,12 +54,20 @@ with Workflow(
 ) as pd:
 
     # dowanload data
+    task_setup_ray = Shell(
+        name="setup_ray",
+        command="ray start --address=192.168.2.90:6379",
+        environment_name="ray-demo"
+    )
+
+    # dowanload data
     task_get_data = Python(
         name="get_data",
         definition=load_script("get_data.py"),
         resource_list=['helper.py'],
         local_params=[
-            {"prop": "data_path", "direct": "OUT", "type": "VARCHAR", "value": ""}]
+            {"prop": "data_path", "direct": "OUT", "type": "VARCHAR", "value": ""}],
+        environment_name="ray-demo"
     )
 
     task_train_model = Python(
@@ -71,7 +79,8 @@ with Workflow(
                 "type": "VARCHAR", "value": ""},
             {"prop": "dataset_path", "direct": "OUT",
                 "type": "VARCHAR", "value": ""}
-        ]
+        ],
+        environment_name="ray-demo"
     )
 
     task_serving = Python(
@@ -84,9 +93,10 @@ with Workflow(
 
     task_test_serving = Python(
         name="test_serving",
-        definition=load_script("test_serving.py")
+        definition=load_script("test_serving.py"),
+        environment_name="ray-demo"
     )
 
-    task_get_data >> task_train_model >> task_serving >> task_test_serving
+    task_setup_ray >> task_get_data >> task_train_model >> task_serving >> task_test_serving
 
-    pd.run()
+    pd.submit()
