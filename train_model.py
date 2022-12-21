@@ -96,10 +96,7 @@ trainer = TensorflowTrainer(
 result = trainer.fit()
 
 print(result.metrics)
-<<<<<<< Updated upstream
-=======
 print(result.checkpoint)
->>>>>>> Stashed changes
 
 checkpoint_path = os.path.abspath(os.path.join(
     os.path.dirname(data_path), '..', "checkpoint.bin"))

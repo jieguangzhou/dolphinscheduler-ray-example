@@ -49,7 +49,7 @@ with Workflow(
     ],
     param={
         "train_ray_address": "auto",
-        "deploy_ray_address": "auto",
+        "deploy_ray_address": "ray://172.17.0.3:10001",
     }
 ) as pd:
 
@@ -60,7 +60,6 @@ with Workflow(
         resource_list=['helper.py'],
         local_params=[
             {"prop": "data_path", "direct": "OUT", "type": "VARCHAR", "value": ""}],
-        # environment_name="ray-demo"
     )
 
     task_train_model = Python(
@@ -73,7 +72,6 @@ with Workflow(
             {"prop": "dataset_path", "direct": "OUT",
                 "type": "VARCHAR", "value": ""}
         ],
-        # environment_name="ray-demo"
     )
 
     task_serving = Python(
@@ -87,7 +85,6 @@ with Workflow(
     task_test_serving = Python(
         name="test_serving",
         definition=load_script("test_serving.py"),
-        # environment_name="ray-demo"
     )
 
     task_get_data >> task_train_model >> task_serving >> task_test_serving
@@ -118,7 +115,6 @@ with Workflow(
     task_test_serving = Python(
         name="test_serving",
         definition=load_script("test_serving.py"),
-        # environment_name="ray-demo"
     )
 
     task_serving >> task_test_serving
@@ -135,7 +131,6 @@ with Workflow(
         command="""
         ray start --num-cpus=8 --object-store-memory=7000000000 --head --block --dashboard-host=0.0.0.0
         """,
-        # environment_name="ray-demo"
     )
 
     pd.submit()
@@ -150,7 +145,6 @@ with Workflow(
         command="""
         ray stop
         """,
-        # environment_name="ray-demo"
     )
 
     pd.submit()
