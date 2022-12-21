@@ -95,6 +95,8 @@ trainer = TensorflowTrainer(
 )
 result = trainer.fit()
 
+print(result.metrics)
+
 checkpoint_path = os.path.abspath(os.path.join(
     os.path.dirname(data_path), '..', "checkpoint.bin"))
 with open(checkpoint_path, 'wb') as w_f:

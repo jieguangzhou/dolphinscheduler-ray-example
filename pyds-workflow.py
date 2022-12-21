@@ -48,8 +48,8 @@ with Workflow(
         resource_helper
     ],
     param={
-        "train_ray_address": "local",
-        "deploy_ray_address": "local",
+        "train_ray_address": "auto",
+        "deploy_ray_address": "auto",
     }
 ) as pd:
 
@@ -67,8 +67,10 @@ with Workflow(
         definition=load_script("train_model.py"),
         resource_list=['helper.py'],
         local_params=[
-            {"prop": "checkpoint_path", "direct": "OUT", "type": "VARCHAR", "value": ""},
-            {"prop": "dataset_path", "direct": "OUT", "type": "VARCHAR", "value": ""}
+            {"prop": "checkpoint_path", "direct": "OUT",
+                "type": "VARCHAR", "value": ""},
+            {"prop": "dataset_path", "direct": "OUT",
+                "type": "VARCHAR", "value": ""}
         ]
     )
 
