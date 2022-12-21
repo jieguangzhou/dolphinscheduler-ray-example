@@ -54,20 +54,13 @@ with Workflow(
 ) as pd:
 
     # dowanload data
-    task_setup_ray = Shell(
-        name="setup_ray",
-        command="ray start --address=192.168.2.90:6379",
-        environment_name="ray-demo"
-    )
-
-    # dowanload data
     task_get_data = Python(
         name="get_data",
         definition=load_script("get_data.py"),
         resource_list=['helper.py'],
         local_params=[
             {"prop": "data_path", "direct": "OUT", "type": "VARCHAR", "value": ""}],
-        environment_name="ray-demo"
+        # environment_name="ray-demo"
     )
 
     task_train_model = Python(
@@ -80,7 +73,7 @@ with Workflow(
             {"prop": "dataset_path", "direct": "OUT",
                 "type": "VARCHAR", "value": ""}
         ],
-        environment_name="ray-demo"
+        # environment_name="ray-demo"
     )
 
     task_serving = Python(
@@ -94,9 +87,70 @@ with Workflow(
     task_test_serving = Python(
         name="test_serving",
         definition=load_script("test_serving.py"),
-        environment_name="ray-demo"
+        # environment_name="ray-demo"
     )
 
-    task_setup_ray >> task_get_data >> task_train_model >> task_serving >> task_test_serving
+    task_get_data >> task_train_model >> task_serving >> task_test_serving
+
+    pd.submit()
+
+
+with Workflow(
+    name="deploy-remote",
+    resource_list=[
+        resource_helper
+    ],
+    param={
+        "deploy_ray_address": "ray://172.17.0.3:10001",
+        "dataset_path": "/tmp/ray-example/data/dataset.pkl",
+        'checkpoint_path': "/tmp/ray-example/checkpoint.bin"
+    }
+) as pd:
+
+    task_serving = Python(
+        name="serving",
+        definition=load_script("serving.py"),
+        resource_list=['helper.py'],
+        local_params=[
+            {"prop": "endpoint_uri", "direct": "OUT", "type": "VARCHAR", "value": ""}]
+    )
+
+    task_test_serving = Python(
+        name="test_serving",
+        definition=load_script("test_serving.py"),
+        # environment_name="ray-demo"
+    )
+
+    task_serving >> task_test_serving
+
+    pd.submit()
+
+with Workflow(
+    name="start-ray",
+) as pd:
+
+    # dowanload data
+    task_start = Shell(
+        name="start",
+        command="""
+        ray start --num-cpus=8 --object-store-memory=7000000000 --head --block --dashboard-host=0.0.0.0
+        """,
+        # environment_name="ray-demo"
+    )
+
+    pd.submit()
+
+with Workflow(
+    name="stop-ray",
+) as pd:
+
+    # dowanload data
+    task_start = Shell(
+        name="stop",
+        command="""
+        ray stop
+        """,
+        # environment_name="ray-demo"
+    )
 
     pd.submit()
