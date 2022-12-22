@@ -7,10 +7,9 @@ from fastapi import Request
 from helper import build_model
 import pandas as pd
 
-ray_address = "local"  # $PARAM: deploy_ray_address
 checkpoint_path = "/tmp/ray-example/checkpoint.bin"  # $PARAM:
 
-ray.init(address=ray_address, runtime_env={"working_dir": "./"})
+ray.init(address="auto", runtime_env={"working_dir": "./"})
 
 
 async def dataframe_adapter(request: Request):

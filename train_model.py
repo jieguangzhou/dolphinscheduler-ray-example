@@ -14,9 +14,10 @@ import tensorflow as tf
 from helper import build_model, get_preprocessor, NUM_WORKERS, EPOCH, INPUT, LABEL, BATCH_SIZE
 
 data_path = "/tmp/ray-example/data/data.csv"  # $PARAM:
-ray_address = "local"  # $PARAM: train_ray_address
+batch_size = BATCH_SIZE  # $PARAM:
+n_epoch = EPOCH  # $PARAM: epoch
 
-ray.init(address=ray_address)
+ray.init(address="auto")
 
 
 def split_data(data: pd.DataFrame) -> Tuple[ray.data.Dataset, pd.DataFrame, np.array]:
@@ -71,11 +72,11 @@ def train_loop_per_worker():
             metrics=["accuracy"],
         )
 
-    for epoch in range(EPOCH):
+    for epoch in range(n_epoch):
         tf_dataset = dataset_shard.to_tf(
             feature_columns=INPUT,
             label_columns=LABEL,
-            batch_size=BATCH_SIZE,
+            batch_size=batch_size,
             drop_last=True,
         )
 

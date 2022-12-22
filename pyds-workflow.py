@@ -48,8 +48,8 @@ with Workflow(
         resource_helper
     ],
     param={
-        "train_ray_address": "auto",
-        "deploy_ray_address": "auto",
+        "batch_size": 8,
+        "epoch": 1,
     }
 ) as pd:
 
