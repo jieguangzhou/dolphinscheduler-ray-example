@@ -53,15 +53,6 @@ with Workflow(
     }
 ) as pd:
 
-    # dowanload data
-    task_get_data = Python(
-        name="get_data",
-        definition=load_script("get_data.py"),
-        resource_list=['helper.py'],
-        local_params=[
-            {"prop": "data_path", "direct": "OUT", "type": "VARCHAR", "value": ""}],
-    )
-
     task_train_model = Python(
         name="train_model",
         definition=load_script("train_model.py"),
@@ -87,7 +78,7 @@ with Workflow(
         definition=load_script("test_serving.py"),
     )
 
-    task_get_data >> task_train_model >> task_serving >> task_test_serving
+    task_train_model >> task_serving >> task_test_serving
 
     pd.submit()
 
@@ -99,8 +90,10 @@ with Workflow(
     # dowanload data
     task_start = Shell(
         name="start",
-        command="""
-        ray start --num-cpus=8 --object-store-memory=7000000000 --head --block --dashboard-host=0.0.0.0
+        command="""cd /tmp
+        ray start --num-cpus=8 --object-store-memory=7000000000 --head --dashboard-host=0.0.0.0
+        sleep 1
+        echo "start ray"
         """,
     )
 
@@ -113,8 +106,7 @@ with Workflow(
     # dowanload data
     task_start = Shell(
         name="stop",
-        command="""
-        ray stop
+        command="""ray stop
         """,
     )
 
