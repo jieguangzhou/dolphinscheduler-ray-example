@@ -76,12 +76,11 @@ Then, we can log in to the ray (for model training) dashboard` <ip>:8265`
 
 Then we can seed the workflow instance of `pipeline`, there are for tasks:
 
-- get_data: download data, or you can do something like ETL task
 - train_model: train model
 - serving: deploy the model
 - test_serving: test the model serving
 
-![image-20221221233418387](images/image-20221221233418387.png)
+![image-20230130110657004](images/image-20230130110657004.png)
 
 
 
