@@ -19,7 +19,7 @@ The following ports are used:
 - 8265: the tray (for training) dashboard 
 
 ```shell
-docker run --name dolphinscheduler-standalone-server -p 12345:12345 -p 25333:25333 -p 8265:8265 -d jalonzjg/dolphinscheduler-standalone-server:3.1.2-ray
+docker run --name dolphinscheduler-standalone-server -p 12345:12345 -p 25333:25333 -p 8265:8265 -d jalonzjg/dolphinscheduler-standalone-server:3.1.4-ray
 ```
 
 And then, we can log in to the DolphinScheduler at `http://<ip>:12345/dolphinscheduler/ui`

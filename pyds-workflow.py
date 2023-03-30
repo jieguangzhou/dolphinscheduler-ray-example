@@ -91,7 +91,7 @@ with Workflow(
     task_start = Shell(
         name="start",
         command="""cd /tmp
-        ray start --num-cpus=8 --object-store-memory=7000000000 --head --dashboard-host=0.0.0.0
+        ray start --num-cpus=8 --object-store-memory=4000000000 --head --dashboard-host=0.0.0.0 || exit 1
         sleep 1
         echo "start ray"
         """,
